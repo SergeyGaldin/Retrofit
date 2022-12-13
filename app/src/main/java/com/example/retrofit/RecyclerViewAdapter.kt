@@ -5,8 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.retrofit.model.User
 
-class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
+class RecyclerViewAdapter(val clickListener: OnItemClickListener) :
+    RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
     var userList = mutableListOf<User>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -17,6 +19,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolde
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(userList[position])
+        holder.itemView.setOnClickListener { clickListener.onItemClickListener(userList[position]) }
     }
 
     override fun getItemCount(): Int {
@@ -39,5 +42,9 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolde
             textViewEmail.text = data.email
             textViewStatus.text = data.status
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClickListener(user: User)
     }
 }

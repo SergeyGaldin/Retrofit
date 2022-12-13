@@ -1,7 +1,10 @@
-package com.example.retrofit
+package com.example.retrofit.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.retrofit.retrofit.RetrofitInstance
+import com.example.retrofit.retrofit.RetrofitService
+import com.example.retrofit.model.UserList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

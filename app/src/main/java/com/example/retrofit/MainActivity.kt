@@ -1,6 +1,7 @@
 package com.example.retrofit
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -10,10 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.retrofit.model.User
+import com.example.retrofit.view_model.MainActivityViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RecyclerViewAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var buttonSearch: Button
+    private lateinit var buttonCreate: Button
     private lateinit var searchEditText: EditText
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private lateinit var viewModel: MainActivityViewModel
@@ -26,12 +30,15 @@ class MainActivity : AppCompatActivity() {
         initRecyclerView()
         initViewModel()
         searchUser()
+
+        buttonCreate.setOnClickListener { startActivity(Intent(this, CreateActivity::class.java)) }
     }
 
     private fun init() {
         recyclerView = findViewById(R.id.recyclerView)
         searchEditText = findViewById(R.id.searchEditText)
         buttonSearch = findViewById(R.id.buttonSearch)
+        buttonCreate = findViewById(R.id.buttonCreate)
     }
 
     private fun searchUser() {
@@ -53,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                     DividerItemDecoration.VERTICAL
                 )
             )
-            recyclerViewAdapter = RecyclerViewAdapter()
+            recyclerViewAdapter = RecyclerViewAdapter(this@MainActivity)
             adapter = recyclerViewAdapter
         }
     }
@@ -70,5 +77,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
         viewModel.getUsersList()
+    }
+
+    override fun onItemClickListener(user: User) {
+        val intent = Intent(this, CreateActivity::class.java)
+        intent.putExtra("user_id", user.id)
+        startActivityForResult(intent, 1000)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1000) {
+            viewModel.getUsersList()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

@@ -1,5 +1,8 @@
-package com.example.retrofit
+package com.example.retrofit.retrofit
 
+import com.example.retrofit.model.User
+import com.example.retrofit.model.UserList
+import com.example.retrofit.model.UserResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -14,7 +17,7 @@ interface RetrofitService {
 
     @GET("users/{user_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
-    fun getUser(@Part("user_id") user_id: String): Call<UserList>
+    fun getUser(@Path("user_id") user_id: String): Call<UserResponse>
 
     @POST("users")
     @Headers(
@@ -30,7 +33,7 @@ interface RetrofitService {
         "Content-Type:application/json",
         "Authorization: Bearer 3c8f9d0f52951e7eec0cd9e5b5e904709a61a48834f46476424bb990539bc391"
     )
-    fun updateUser(@Part("user_id") user_id: String, @Body params: User): Call<UserResponse>
+    fun updateUser(@Path("user_id") user_id: String, @Body params: User): Call<UserResponse>
 
     @DELETE("users/{user_id}")
     @Headers(
@@ -38,5 +41,5 @@ interface RetrofitService {
         "Content-Type:application/json",
         "Authorization: Bearer 3c8f9d0f52951e7eec0cd9e5b5e904709a61a48834f46476424bb990539bc391"
     )
-    fun deleteUser(@Part("user_id") user_id: String): Call<UserResponse>
+    fun deleteUser(@Path("user_id") user_id: String): Call<UserResponse>
 }
